@@ -6,7 +6,9 @@ import {
   ButtonGreen,
   StartButton,
 } from "../../styles/Buttons";
+import { GameSettings } from "../../styles/Containers";
 import { GeniusContainer, Genius } from "../../styles/Genius";
+import { Score } from "../../styles/Score";
 
 export default function MainGame() {
   const [order, setOrder] = useState<Number[]>([]);
@@ -64,12 +66,14 @@ export default function MainGame() {
     setClickOrder([...clickOrder, color]);
   };
 
+  // Inicia próximo nível caso o usuário acerte a sequência
   const nextLevel = () => {
     setScore(score + 1);
     setClickOrder([]);
     shuffleOrder();
   };
 
+  // Reinicia o jogo
   const gameOver = () => {
     setScore(0);
     setClickOrder([]);
@@ -78,7 +82,6 @@ export default function MainGame() {
   };
 
   //Ilumina o botão gerado aleatoriamente
-
   useEffect(() => {
     if (order.length > 0) {
       for (let i in order) {
@@ -90,17 +93,16 @@ export default function MainGame() {
   }, [order]);
 
   //Verifica se o usuário clicou na ordem certa
-
   useEffect(() => {
     if (clickOrder.length > 0) {
-      if (clickOrder.length === order.length) {
-        if (clickOrder.every((color, index) => color === order[index])) {
+      if (clickOrder.every((color, index) => color === order[index])) {
+        if (clickOrder.length === order.length) {
           setTimeout(() => {
             nextLevel();
           }, 1000);
-        } else {
-          gameOver();
         }
+      } else {
+        gameOver();
       }
     }
   }, [clickOrder]);
@@ -133,16 +135,19 @@ export default function MainGame() {
           }}
         />
       </Genius>
-      <StartButton
-        onClick={() => {
-          order.length === 0 && shuffleOrder();
-        }}
-        style={
-          order.length > 0 ? { opacity: "0.5", cursor: "not-allowed" } : {}
-        }
-      >
-        Start
-      </StartButton>
+      <GameSettings>
+        <StartButton
+          onClick={() => {
+            order.length === 0 && shuffleOrder();
+          }}
+          style={
+            order.length > 0 ? { opacity: "0.5", cursor: "not-allowed" } : {}
+          }
+        >
+          Iniciar jogo
+        </StartButton>
+        <Score>Pontuação: {score}</Score>
+      </GameSettings>
     </GeniusContainer>
   );
 }

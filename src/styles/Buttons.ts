@@ -38,7 +38,6 @@ const StartButton = styled(Button)`
   padding: 8px 16px;
   border-radius: 4px;
   font-size: 1.2em;
-  margin-top: 20px;
 `;
 
 export { ButtonBlue, ButtonRed, ButtonGreen, ButtonYellow, StartButton };
